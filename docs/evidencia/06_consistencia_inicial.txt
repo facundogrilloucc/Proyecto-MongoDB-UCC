@@ -1,0 +1,30 @@
+
+====================================================================================================
+Prueba 1 — Un usuario no puede postularse dos veces a la misma oferta (índice único)
+----------------------------------------------------------------------------------------------------
+OK    Postulación duplicada rechazada por ux_usuario_oferta (código 11000, E11000)
+
+====================================================================================================
+Prueba 2 — Descontar una vacante: lectura-y-escritura vs. operación atómica condicional
+----------------------------------------------------------------------------------------------------
+  Ingenuo: 2 candidatos aceptados con 1 sola vacante; disponibles quedó en 0 (la segunda escritura pisó a la primera)
+OK    El enfoque de leer y después escribir permite aceptar más candidatos que vacantes
+  Atómico: primera aceptación modificó 1 documento, segunda modificó 0; disponibles = 0
+OK    Con $inc condicional la segunda aceptación se rechaza y no hay sobrecupo
+OK    El validador rechaza vacantes.disponibles < 0 (código 121, DocumentValidationFailure)
+
+====================================================================================================
+Prueba 3 — Cambio de estado atómico con control de transiciones
+----------------------------------------------------------------------------------------------------
+OK    Una postulación rechazada no puede volver a 'entrevista'
+OK    Una postulación en revisión sí puede pasar a 'entrevista'
+OK    El estado y el historial cambiaron juntos (una sola operación sobre un documento)
+
+====================================================================================================
+Prueba 4 — El entorno admite transacciones multidocumento (replica set)
+----------------------------------------------------------------------------------------------------
+  Transacción abortada: falla simulada antes del commit
+OK    Tras el abort no quedó ningún cambio parcial: la vacante sigue disponible y no hay postulación
+
+Limpieza: 3 ofertas de prueba eliminadas.
+Todas las pruebas pasaron.

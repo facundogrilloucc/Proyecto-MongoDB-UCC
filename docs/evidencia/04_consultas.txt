@@ -1,0 +1,192 @@
+
+====================================================================================================
+Consulta 1 — ¿Qué ofertas abiertas para semi-senior pagan al menos $1.700.000 de mínimo?
+Tipo: filtro con operadores de comparación ($gte) + ordenamiento
+----------------------------------------------------------------------------------------------------
+{"titulo":"Desarrollador/a Backend Ssr","modalidad":"hibrido","salario":{"min":1930000,"max":2400000,"moneda":"ARS","periodo":"mensual"},"empresa":"Pampa Pagos"}
+{"titulo":"QA Automation Engineer Ssr","modalidad":"presencial","salario":{"min":1930000,"max":2750000,"moneda":"ARS","periodo":"mensual"},"empresa":"Cauce Seguros"}
+{"titulo":"Analista de Datos Ssr","modalidad":"hibrido","salario":{"min":1700000,"max":2350000,"moneda":"ARS","periodo":"mensual"},"empresa":"Cauce Seguros"}
+(3 resultados)
+
+====================================================================================================
+Consulta 2 — ¿Qué postulaciones activas de los últimos 30 días tienen una coincidencia de skills alta (>= 75 %)?
+Tipo: filtro con operadores de comparación ($gte, $nin) sobre números y fechas
+----------------------------------------------------------------------------------------------------
+{"usuarioId":"68999af513335bc9bb635ff5","ofertaId":"6aacc5503c4722f3c1b4fd44","estado":"entrevista","coincidenciaSkills":1,"fechaPostulacion":"2026-10-23"}
+{"usuarioId":"675ffecd115c42cd51476e86","ofertaId":"6ab905404804044c82a4e22e","estado":"enviada","coincidenciaSkills":1,"fechaPostulacion":"2026-10-23"}
+{"usuarioId":"6687628e552734077cd2192f","ofertaId":"6aab9e0042264ba40775d778","estado":"enviada","coincidenciaSkills":1,"fechaPostulacion":"2026-10-13"}
+{"usuarioId":"6a6bbd91aff8754d1238d630","ofertaId":"6a5dc77056c76990740173c1","estado":"enviada","coincidenciaSkills":1,"fechaPostulacion":"2026-10-11"}
+{"usuarioId":"68afd56c5fcc997d1cbb304b","ofertaId":"6aacc5503c4722f3c1b4fd44","estado":"enviada","coincidenciaSkills":1,"fechaPostulacion":"2026-10-07"}
+{"usuarioId":"69677980adf75924c5b8386b","ofertaId":"6ac1dd50ecdfd364bdce7f65","estado":"aceptada","coincidenciaSkills":1,"fechaPostulacion":"2026-10-06"}
+{"usuarioId":"69bd862c548c1d84340de049","ofertaId":"6aacc5503c4722f3c1b4fd44","estado":"enviada","coincidenciaSkills":1,"fechaPostulacion":"2026-10-06"}
+{"usuarioId":"67bec81e578799d93799a376","ofertaId":"6a8546604ffd5b7a226dd24f","estado":"aceptada","coincidenciaSkills":1,"fechaPostulacion":"2026-10-01"}
+{"usuarioId":"695774eac8ab96ace0b4659a","ofertaId":"6aa0f5e02b0e63fdfc3d3138","estado":"aceptada","coincidenciaSkills":1,"fechaPostulacion":"2026-09-27"}
+{"usuarioId":"65d9203b1b0ae22eecc817a6","ofertaId":"6aa4a410402d35e81f47d902","estado":"enviada","coincidenciaSkills":0.8,"fechaPostulacion":"2026-10-09"}
+{"usuarioId":"65e263a795dfe6cbc75aec94","ofertaId":"6ac599902febcc33cf5c8dd3","estado":"en_revision","coincidenciaSkills":0.75,"fechaPostulacion":"2026-10-22"}
+{"usuarioId":"6965b4aab47a1c5bb0b39015","ofertaId":"6ad579a0ac7e5cc6b0cf3e7f","estado":"aceptada","coincidenciaSkills":0.75,"fechaPostulacion":"2026-10-20"}
+{"usuarioId":"682084883373730efc31a597","ofertaId":"6aab9e0042264ba40775d778","estado":"en_revision","coincidenciaSkills":0.75,"fechaPostulacion":"2026-10-09"}
+{"usuarioId":"6819da2dbbc994734363589c","ofertaId":"6abef400708175fd4648bbe8","estado":"enviada","coincidenciaSkills":0.75,"fechaPostulacion":"2026-10-09"}
+{"usuarioId":"69a58111495743a281b13b80","ofertaId":"6aab9e0042264ba40775d778","estado":"en_revision","coincidenciaSkills":0.75,"fechaPostulacion":"2026-10-08"}
+{"usuarioId":"6774ee52ee8d5daa8eb7c306","ofertaId":"6abef400708175fd4648bbe8","estado":"enviada","coincidenciaSkills":0.75,"fechaPostulacion":"2026-10-03"}
+(16 resultados)
+
+====================================================================================================
+Consulta 3 — ¿A qué ofertas abiertas (no junior) puede aplicar alguien que vive en la provincia de Córdoba?
+Tipo: operadores lógicos ($and implícito, $or, $ne, $in): remotas, o híbridas/presenciales en Córdoba
+----------------------------------------------------------------------------------------------------
+{"titulo":"Analista de Datos Ssr","modalidad":"hibrido","empresa":"Cauce Seguros","ciudad":"Córdoba"}
+{"titulo":"QA Automation Engineer Ssr","modalidad":"presencial","empresa":"Cauce Seguros","ciudad":"Córdoba"}
+{"titulo":"Backend Developer Lead","modalidad":"remoto","empresa":"Nubia Software","ciudad":"Córdoba"}
+{"titulo":"Data Analyst Lead","modalidad":"remoto","empresa":"Tilo Retail","ciudad":"Córdoba"}
+{"titulo":"Desarrollador/a Backend Sr","modalidad":"remoto","empresa":"Cauce Seguros"}
+{"titulo":"Desarrollador/a Backend Ssr","modalidad":"remoto","empresa":"Aula Viva","ciudad":"Ciudad Autónoma de Buenos Aires"}
+{"titulo":"Desarrollador/a Backend Ssr","modalidad":"remoto","empresa":"Puna Studio","ciudad":"La Plata"}
+{"titulo":"Desarrollador/a Backend Ssr","modalidad":"remoto","empresa":"Tilo Retail"}
+{"titulo":"Desarrollador/a Frontend Lead","modalidad":"remoto","empresa":"Tilo Retail"}
+{"titulo":"Desarrollador/a Frontend Ssr","modalidad":"remoto","empresa":"Puna Studio"}
+{"titulo":"Desarrollador/a Frontend Ssr","modalidad":"remoto","empresa":"Cauce Seguros","ciudad":"Córdoba"}
+{"titulo":"DevOps Engineer Ssr","modalidad":"remoto","empresa":"Molle Tech"}
+{"titulo":"Mobile Developer Ssr","modalidad":"remoto","empresa":"Molle Tech","ciudad":"Ciudad Autónoma de Buenos Aires"}
+{"titulo":"QA Automation Engineer Sr","modalidad":"remoto","empresa":"Andes Data Labs","ciudad":"Córdoba"}
+{"titulo":"QA Automation Engineer Ssr","modalidad":"remoto","empresa":"Tilo Retail","ciudad":"Córdoba"}
+(15 resultados)
+
+====================================================================================================
+Consulta 4 — ¿Qué candidatos de Córdoba están disponibles, aceptan trabajo remoto y pretenden hasta $2.000.000?
+Tipo: consulta sobre atributos anidados (ubicacion.*, preferencias.*, preferencias.salarioPretendido.*)
+----------------------------------------------------------------------------------------------------
+{"nombre":"Agustin","apellido":"Molina","seniority":"junior","pretende":1120000}
+{"nombre":"Ciro","apellido":"Gonzalez","seniority":"junior","pretende":1130000}
+{"nombre":"Dylan Benjamin","apellido":"Gomez","seniority":"junior","pretende":1400000}
+{"nombre":"Sofia","apellido":"Sanchez","seniority":"semi-senior","pretende":1490000}
+{"nombre":"Julieta","apellido":"Rodriguez","seniority":"junior","pretende":1500000}
+{"nombre":"Thiago Benjamin","apellido":"Hernandez","seniority":"junior","pretende":1500000}
+(6 resultados)
+
+====================================================================================================
+Consulta 5 — ¿Quiénes saben Python y SQL y trabajan hoy en una empresa registrada en la plataforma?
+Tipo: consulta sobre arreglos: $all sobre skills y $elemMatch sobre el arreglo de experiencia (en el filtro y en la proyección)
+----------------------------------------------------------------------------------------------------
+{"nombre":"Victoria","apellido":"Diaz","skills":["sql","aws","docker","redis","python","go","git"],"experiencia":[{"empresaId":"658d8e7719db3ad0ddd1dfb2","empresaNombre":"Algarrobo Agrotech","puesto":"Backend Developer Jr","desde":"2023-06-04","hasta":null,"actual":true}]}
+{"nombre":"Catalina","apellido":"Gomez","skills":["docker","sql","mongodb","node.js","postgresql","python","java","spring","django","react","css","git","jira"],"experiencia":[{"empresaId":"676f5df0405cacec877409a9","empresaNombre":"Puna Studio","puesto":"Desarrollador/a Backend Lead","desde":"2024-03-04","hasta":null,"actual":true}]}
+{"nombre":"Francisco","apellido":"Garcia","skills":["sql","power bi","tableau","python","airflow","excel","git","jira"],"experiencia":[{"empresaId":"6763827b451b4cf36123fdf7","empresaNombre":"Aula Viva","puesto":"Data Engineer Jr","desde":"2023-08-16","hasta":null,"actual":true}]}
+{"nombre":"Thiago","apellido":"Diaz","skills":["python","java","sql","spring","docker","aws","postgresql","node.js","git","scrum"],"experiencia":[{"empresaId":"67fc8419444ea7c8c0398710","empresaNombre":"Cauce Seguros","puesto":"Desarrollador/a Backend Sr","desde":"2025-09-15","hasta":null,"actual":true}]}
+{"nombre":"Emiliano","apellido":"Rivero","skills":["excel","sql","python","power bi","git"],"experiencia":[{"empresaId":"67fc8419444ea7c8c0398710","empresaNombre":"Cauce Seguros","puesto":"Data Engineer Jr","desde":"2023-11-25","hasta":null,"actual":true,"descripcion":"Participación en un equipo ágil con despliegues frecuentes."}]}
+{"nombre":"Bautista","apellido":"Coronel","skills":["sql","python","docker","jira","git"],"experiencia":[{"empresaId":"683a62b1b7c93acfe059a0ee","empresaNombre":"Brújula Fintech","puesto":"Desarrollador/a Backend Ssr","desde":"2025-08-06","hasta":null,"actual":true}]}
+{"nombre":"Juan Pablo","apellido":"Ojeda","skills":["excel","python","tableau","sql","scrum","git"],"experiencia":[{"empresaId":"682e3b0db74d0fb132e70629","empresaNombre":"Quebracho Sistemas","puesto":"Analista de Datos Sr","desde":"2025-06-14","hasta":null,"actual":true,"descripcion":"Migración de sistemas legados a una arquitectura moderna."}]}
+{"nombre":"Pedro","apellido":"Herrera","skills":["python","sql","power bi","excel","jira","scrum"],"experiencia":[{"empresaId":"680db621972a846916419f82","empresaNombre":"Andes Data Labs","puesto":"Data Engineer Sr","desde":"2024-08-24","hasta":null,"actual":true}]}
+{"nombre":"Pilar","apellido":"Diaz","skills":["sql","python","machine learning","spark","pandas","scrum","git"],"experiencia":[{"empresaId":"64235c98d261a7ab3aa2e4f9","empresaNombre":"Cóndor Cloud","puesto":"Data Engineer Ssr","desde":"2025-09-25","hasta":null,"actual":true}]}
+{"nombre":"Isabella","apellido":"Nuñez","skills":["java","docker","python","kubernetes","sql","postgresql","mongodb","git","jira"],"experiencia":[{"empresaId":"63be1c38ce4a2bbdc241330b","empresaNombre":"Pampa Pagos","puesto":"Backend Developer Sr","desde":"2024-11-01","hasta":null,"actual":true,"descripcion":"Desarrollo y mantenimiento de funcionalidades del producto principal."}]}
+(10 resultados)
+
+====================================================================================================
+Consulta 6 — ¿Cuáles son las 10 ofertas abiertas mejor pagas en pesos?
+Tipo: proyección (con campos calculados), ordenamiento y límite
+----------------------------------------------------------------------------------------------------
+{"titulo":"Frontend Developer Lead","modalidad":"hibrido","empresa":"Pampa Pagos","salarioMax":4410000}
+{"titulo":"Backend Developer Lead","modalidad":"hibrido","empresa":"Brújula Fintech","salarioMax":4390000}
+{"titulo":"Backend Developer Lead","modalidad":"remoto","empresa":"Nubia Software","salarioMax":4210000}
+{"titulo":"QA Automation Engineer Sr","modalidad":"remoto","empresa":"Andes Data Labs","salarioMax":3980000}
+{"titulo":"Desarrollador/a Backend Sr","modalidad":"hibrido","empresa":"Sierra Consulting","salarioMax":3640000}
+{"titulo":"Data Engineer Sr","modalidad":"hibrido","empresa":"Puna Studio","salarioMax":3550000}
+{"titulo":"Desarrollador/a Backend Sr","modalidad":"remoto","empresa":"Cauce Seguros","salarioMax":3450000}
+{"titulo":"Desarrollador/a Backend Sr","modalidad":"presencial","empresa":"Aula Viva","salarioMax":3080000}
+{"titulo":"SRE Sr","modalidad":"hibrido","empresa":"Faro Telecom","salarioMax":2890000}
+{"titulo":"QA Automation Engineer Ssr","modalidad":"presencial","empresa":"Cauce Seguros","salarioMax":2750000}
+(10 resultados)
+
+====================================================================================================
+Consulta 7 — ¿Cómo es el embudo de selección de cada empresa y cuál es su tasa de aceptación?
+Tipo: aggregate(): $group con conteos condicionales, $lookup a empresas, cálculo de tasas y $sort
+----------------------------------------------------------------------------------------------------
+{"postulaciones":5,"entrevistas":4,"aceptadas":2,"retiradas":1,"empresa":"Lumen Analytics","tasaAceptacion":0.5}
+{"postulaciones":3,"entrevistas":2,"aceptadas":1,"retiradas":0,"empresa":"Cóndor Cloud","tasaAceptacion":0.333}
+{"postulaciones":9,"entrevistas":2,"aceptadas":2,"retiradas":2,"empresa":"Mercadito Online","tasaAceptacion":0.286}
+{"postulaciones":13,"entrevistas":4,"aceptadas":3,"retiradas":1,"empresa":"Andes Data Labs","tasaAceptacion":0.25}
+{"postulaciones":28,"entrevistas":10,"aceptadas":5,"retiradas":4,"empresa":"Pampa Pagos","tasaAceptacion":0.208}
+{"postulaciones":22,"entrevistas":9,"aceptadas":3,"retiradas":1,"empresa":"Molle Tech","tasaAceptacion":0.143}
+{"postulaciones":8,"entrevistas":4,"aceptadas":1,"retiradas":1,"empresa":"Nubia Software","tasaAceptacion":0.143}
+{"postulaciones":10,"entrevistas":5,"aceptadas":1,"retiradas":2,"empresa":"Cumbre Salud Digital","tasaAceptacion":0.125}
+{"postulaciones":22,"entrevistas":3,"aceptadas":2,"retiradas":3,"empresa":"Puna Studio","tasaAceptacion":0.105}
+{"postulaciones":13,"entrevistas":6,"aceptadas":1,"retiradas":0,"empresa":"Aula Viva","tasaAceptacion":0.077}
+{"postulaciones":18,"entrevistas":8,"aceptadas":1,"retiradas":3,"empresa":"Faro Telecom","tasaAceptacion":0.067}
+{"postulaciones":18,"entrevistas":5,"aceptadas":1,"retiradas":0,"empresa":"Cauce Seguros","tasaAceptacion":0.056}
+{"postulaciones":25,"entrevistas":4,"aceptadas":1,"retiradas":2,"empresa":"Tilo Retail","tasaAceptacion":0.043}
+{"postulaciones":46,"entrevistas":9,"aceptadas":1,"retiradas":6,"empresa":"Brújula Fintech","tasaAceptacion":0.025}
+{"postulaciones":6,"entrevistas":0,"aceptadas":0,"retiradas":1,"empresa":"Algarrobo Agrotech","tasaAceptacion":0}
+{"postulaciones":3,"entrevistas":0,"aceptadas":0,"retiradas":0,"empresa":"Sierra Consulting","tasaAceptacion":0}
+{"postulaciones":1,"entrevistas":0,"aceptadas":0,"retiradas":0,"empresa":"Quebracho Sistemas","tasaAceptacion":0}
+(17 resultados)
+
+====================================================================================================
+Consulta 8 — ¿Qué skills piden las empresas más de lo que las ofrecen los candidatos (y al revés)?
+Tipo: aggregate(): $unwind, $group, $unionWith entre ofertas y usuarios, y $facet
+----------------------------------------------------------------------------------------------------
+{"masDemandadasQueOfrecidas":[{"_id":"aws","ofertas":19,"usuarios":17,"pctOfertas":31.7,"pctUsuarios":14.2,"brecha":17.5},{"_id":"next.js","ofertas":9,"usuarios":1,"pctOfertas":15,"pctUsuarios":0.8,"brecha":14.2},{"_id":"typescript","ofertas":10,"usuarios":7,"pctOfertas":16.7,"pctUsuarios":5.8,"brecha":10.9},{"_id":"postgresql","ofertas":17,"usuarios":21,"pctOfertas":28.3,"pctUsuarios":17.5,"brecha":10.8},{"_id":"react","ofertas":11,"usuarios":12,"pctOfertas":18.3,"pctUsuarios":10,"brecha":8.3},{"_id":"cypress","ofertas":7,"usuarios":6,"pctOfertas":11.7,"pctUsuarios":5,"brecha":6.7}],"masOfrecidasQueDemandadas":[{"_id":"git","ofertas":14,"usuarios":86,"pctOfertas":23.3,"pctUsuarios":71.7,"brecha":-48.4},{"_id":"scrum","ofertas":11,"usuarios":58,"pctOfertas":18.3,"pctUsuarios":48.3,"brecha":-30},{"_id":"jira","ofertas":9,"usuarios":41,"pctOfertas":15,"pctUsuarios":34.2,"brecha":-19.2},{"_id":"node.js","ofertas":3,"usuarios":23,"pctOfertas":5,"pctUsuarios":19.2,"brecha":-14.2}]}
+(1 resultado)
+
+====================================================================================================
+Consulta 9 — ¿Cuánto se paga según el seniority y la moneda?
+Tipo: agrupamiento con cálculos estadísticos ($avg, $min, $max, $stdDevPop, $sum)
+----------------------------------------------------------------------------------------------------
+{"ofertas":10,"minimo":910000,"maximo":1800000,"moneda":"ARS","seniority":"junior","promedio":1296500,"desvio":138005}
+{"ofertas":11,"minimo":1460000,"maximo":2750000,"moneda":"ARS","seniority":"semi-senior","promedio":1968182,"desvio":213459}
+{"ofertas":8,"minimo":2460000,"maximo":3980000,"moneda":"ARS","seniority":"senior","promedio":3090000,"desvio":254608}
+{"ofertas":7,"minimo":3230000,"maximo":6110000,"moneda":"ARS","seniority":"lead","promedio":4197857,"desvio":428660}
+{"ofertas":3,"minimo":2000,"maximo":3300,"moneda":"USD","seniority":"semi-senior","promedio":2567,"desvio":330}
+{"ofertas":2,"minimo":3400,"maximo":5800,"moneda":"USD","seniority":"senior","promedio":4400,"desvio":600}
+{"ofertas":1,"minimo":5600,"maximo":6800,"moneda":"USD","seniority":"lead","promedio":6200,"desvio":0}
+(7 resultados)
+
+====================================================================================================
+Consulta 10 — ¿Qué candidatos que todavía no se postularon encajan mejor con la oferta "Desarrollador/a Backend Ssr" de Puna Studio?
+Tipo: consulta adicional (matching): $setIntersection, cálculo de coincidencia, $lookup con pipeline y ranking
+----------------------------------------------------------------------------------------------------
+Skills requeridas: mongodb, sql, postgresql, spring, aws | deseables: redis
+{"seniority":"senior","coincidentes":["aws","mongodb","postgresql","spring","sql"],"deseables":0,"coincidencia":1,"candidato":"Simon Guzman"}
+{"seniority":"senior","coincidentes":["aws","mongodb","postgresql","sql"],"deseables":1,"coincidencia":0.8,"candidato":"Alma Fernandez","disponible":false}
+{"seniority":"senior","coincidentes":["aws","postgresql","spring","sql"],"deseables":0,"coincidencia":0.8,"candidato":"Thiago Diaz","disponible":false}
+{"seniority":"senior","coincidentes":["mongodb","postgresql","spring","sql"],"deseables":0,"coincidencia":0.8,"candidato":"Lara Molina"}
+{"seniority":"senior","coincidentes":["mongodb","spring","sql"],"deseables":0,"coincidencia":0.6,"candidato":"Agustin Caceres","disponible":true}
+{"seniority":"semi-senior","coincidentes":["aws","postgresql","spring"],"deseables":0,"coincidencia":0.6,"candidato":"Juan Ignacio Martinez","disponible":true}
+{"seniority":"senior","coincidentes":["mongodb","postgresql","sql"],"deseables":0,"coincidencia":0.6,"candidato":"Lola Rodriguez","disponible":true}
+{"seniority":"semi-senior","coincidentes":["mongodb","postgresql","sql"],"deseables":0,"coincidencia":0.6,"candidato":"Valentina Blanco","disponible":false}
+{"seniority":"senior","coincidentes":["mongodb","postgresql","sql"],"deseables":0,"coincidencia":0.6,"candidato":"Isabella Nuñez"}
+(9 resultados)
+
+====================================================================================================
+Consulta 11 — ¿Cómo evolucionaron las postulaciones mes a mes?
+Tipo: aggregate(): agrupamiento temporal con $dateTrunc y métricas por período
+----------------------------------------------------------------------------------------------------
+{"postulaciones":5,"aceptadas":2,"mes":"2026-04","coincidenciaPromedio":0.5}
+{"postulaciones":10,"aceptadas":4,"mes":"2026-05","coincidenciaPromedio":0.44}
+{"postulaciones":13,"aceptadas":6,"mes":"2026-06","coincidenciaPromedio":0.45}
+{"postulaciones":17,"aceptadas":4,"mes":"2026-07","coincidenciaPromedio":0.49}
+{"postulaciones":33,"aceptadas":3,"mes":"2026-08","coincidenciaPromedio":0.39}
+{"postulaciones":43,"aceptadas":2,"mes":"2026-09","coincidenciaPromedio":0.43}
+{"postulaciones":129,"aceptadas":4,"mes":"2026-10","coincidenciaPromedio":0.38}
+(7 resultados)
+
+====================================================================================================
+Consulta 12 — ¿Los años de experiencia declarados son coherentes con el seniority de cada perfil?
+Tipo: aggregate(): $map + $dateDiff sobre el arreglo embebido de experiencia y estadísticas por grupo
+----------------------------------------------------------------------------------------------------
+{"usuarios":32,"sinExperiencia":16,"seniority":"junior","promedio":0.7,"minimo":0,"maximo":2.2}
+{"usuarios":48,"sinExperiencia":0,"seniority":"semi-senior","promedio":3.2,"minimo":2.2,"maximo":4.2}
+{"usuarios":29,"sinExperiencia":0,"seniority":"senior","promedio":7.1,"minimo":5.1,"maximo":9.2}
+{"usuarios":11,"sinExperiencia":0,"seniority":"lead","promedio":11.2,"minimo":8.4,"maximo":13.8}
+(4 resultados)
+
+====================================================================================================
+Consulta 13 — ¿Qué ofertas mencionan "python" y "remoto" en el título o la descripción?
+Tipo: extensión: búsqueda de texto con índice text (idioma español) y ordenamiento por relevancia
+----------------------------------------------------------------------------------------------------
+{"titulo":"Desarrollador/a Backend Ssr","modalidad":"remoto","empresa":"Tilo Retail","relevancia":1.0588235294117647}
+{"titulo":"Data Analyst Jr","modalidad":"remoto","empresa":"Quebracho Sistemas","relevancia":1.0555555555555556}
+{"titulo":"Desarrollador/a Backend Jr","modalidad":"remoto","empresa":"Cóndor Cloud","relevancia":1.0526315789473684}
+{"titulo":"Data Engineer Ssr","modalidad":"remoto","empresa":"Molle Tech","relevancia":1.0526315789473684}
+{"titulo":"Data Engineer Sr","modalidad":"hibrido","empresa":"Puna Studio","relevancia":0.53125}
+{"titulo":"Backend Developer Sr","modalidad":"remoto","empresa":"Sierra Consulting","relevancia":0.5294117647058824}
+{"titulo":"Desarrollador/a Backend Ssr","modalidad":"remoto","empresa":"Aula Viva","relevancia":0.5294117647058824}
+{"titulo":"Backend Developer Jr","modalidad":"remoto","empresa":"Cauce Seguros","relevancia":0.5294117647058824}
+(8 resultados)

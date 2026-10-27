@@ -1,0 +1,56 @@
+
+====================================================================================================
+Explain 1 — Ofertas abiertas semi-senior en ARS con salario mínimo >= 1.700.000 (consulta 1)
+----------------------------------------------------------------------------------------------------
+  con índice       plan: FETCH <- IXSCAN[ix_busqueda_ofertas]
+                   devueltos: 3 | claves examinadas: 3 | documentos examinados: 3 | tiempo: 0 ms
+  sin índice       plan: SORT <- COLLSCAN
+                   devueltos: 3 | claves examinadas: 0 | documentos examinados: 60 | tiempo: 0 ms
+
+====================================================================================================
+Explain 2 — Usuarios con python y sql (consulta 5)
+----------------------------------------------------------------------------------------------------
+  con índice       plan: FETCH <- IXSCAN[ix_skills]
+                   devueltos: 28 | claves examinadas: 44 | documentos examinados: 44 | tiempo: 0 ms
+  sin índice       plan: COLLSCAN
+                   devueltos: 28 | claves examinadas: 0 | documentos examinados: 120 | tiempo: 0 ms
+
+====================================================================================================
+Explain 3 — Postulantes activos de la oferta con más postulaciones (28)
+----------------------------------------------------------------------------------------------------
+  con índice       plan: FETCH <- IXSCAN[ix_oferta_estado]
+                   devueltos: 21 | claves examinadas: 22 | documentos examinados: 21 | tiempo: 0 ms
+  sin índice       plan: COLLSCAN
+                   devueltos: 21 | claves examinadas: 0 | documentos examinados: 250 | tiempo: 0 ms
+
+====================================================================================================
+Explain 4 — Postulaciones de un usuario ordenadas por fecha (6 postulaciones)
+----------------------------------------------------------------------------------------------------
+  con índice       plan: SORT <- FETCH <- IXSCAN[ux_usuario_oferta]
+                   devueltos: 6 | claves examinadas: 6 | documentos examinados: 6 | tiempo: 0 ms
+  sin índice       plan: SORT <- COLLSCAN
+                   devueltos: 6 | claves examinadas: 0 | documentos examinados: 250 | tiempo: 0 ms
+
+====================================================================================================
+Explain 5 — Top 10 ofertas abiertas mejor pagas en ARS (consulta 6)
+----------------------------------------------------------------------------------------------------
+  con índice       plan: SORT <- FETCH <- IXSCAN[ix_busqueda_ofertas]
+                   devueltos: 10 | claves examinadas: 26 | documentos examinados: 19 | tiempo: 0 ms
+  sin índice       plan: SORT <- COLLSCAN
+                   devueltos: 10 | claves examinadas: 0 | documentos examinados: 60 | tiempo: 0 ms
+
+====================================================================================================
+Explain 6 — Buscar un usuario por email (login / alta)
+----------------------------------------------------------------------------------------------------
+  con índice       plan: EXPRESS_IXSCAN[ux_email]
+                   devueltos: 1 | claves examinadas: 1 | documentos examinados: 1 | tiempo: 0 ms
+  sin índice       plan: COLLSCAN
+                   devueltos: 1 | claves examinadas: 0 | documentos examinados: 120 | tiempo: 0 ms
+
+====================================================================================================
+Tamaño de colecciones e índices (bytes)
+----------------------------------------------------------------------------------------------------
+  usuarios       datos:  146883 | índices:   45056 | _id_=4096, ux_email=20480, ix_skills=20480
+  empresas       datos:    6238 | índices:   24576 | _id_=4096, ux_nombre=20480
+  ofertas        datos:   45840 | índices:   77824 | _id_=4096, ix_busqueda_ofertas=20480, ix_skills_requeridas=20480, tx_ofertas=32768
+  postulaciones  datos:  103603 | índices:   49152 | _id_=4096, ux_usuario_oferta=24576, ix_oferta_estado=20480

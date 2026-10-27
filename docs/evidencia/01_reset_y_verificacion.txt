@@ -1,0 +1,61 @@
+==> Levantando MongoDB
+==> Creando colecciones y validaciones
+Base "empleos" eliminada
+Colecciones creadas: empresas, ofertas, postulaciones, usuarios
+==> Cargando datos de prueba
+empresas         20 documentos
+usuarios        120 documentos
+ofertas          60 documentos
+postulaciones   250 documentos
+==> Creando índices
+usuarios       _id_, ux_email, ix_skills
+empresas       _id_, ux_nombre
+ofertas        _id_, ix_busqueda_ofertas, ix_skills_requeridas, tx_ofertas
+postulaciones  _id_, ux_usuario_oferta, ix_oferta_estado
+==> Verificando la carga
+== Cantidad de documentos
+   empresas       20
+   usuarios       120
+   ofertas        60
+   postulaciones  250
+   total          450
+
+== Integridad referencial
+OK    Toda oferta referencia a una empresa existente
+OK    El nombre de empresa desnormalizado en la oferta coincide con el original
+OK    Toda postulación referencia a un usuario existente
+OK    Toda postulación referencia a una oferta existente y de la misma empresa
+
+== Reglas de negocio
+OK    vacantes.disponibles = total - postulaciones aceptadas
+OK    cantidadPostulaciones = postulaciones no retiradas
+OK    Ninguna oferta abierta o pausada se quedó sin vacantes
+OK    Las ofertas cerradas tienen fecha de cierre y las demás no
+OK    El estado de la postulación coincide con el último paso de su historial
+OK    Nadie se postuló antes de que se publicara la oferta
+
+== Casos límite
+   Usuarios sin experiencia laboral               16
+   Usuarios sin skills (perfil recién creado)     2
+   Usuarios sin preferencias                      20
+   Usuarios fuera de Argentina                    3
+   Usuarios con más de un trabajo actual          3
+   Experiencias en empresas no registradas        129
+   Empresas sin ofertas publicadas                3
+   Ofertas sin salario publicado                  18
+   Ofertas remotas sin ubicación                  10
+   Ofertas cerradas sin vacantes disponibles      10
+   Ofertas pausadas                               4
+   Ofertas sin postulaciones                      3
+   Postulaciones por estado: {"aceptada":25,"en_revision":44,"entrevista":23,"enviada":58,"rechazada":73,"retirada":27}
+
+== Validación de esquema (se espera que cada inserción falle)
+OK    usuarios: email con formato inválido -> rechazado (código 121)
+OK    usuarios: seniority fuera de los valores permitidos -> rechazado (código 121)
+OK    usuarios: skills repetidas -> rechazado (código 121)
+OK    ofertas: más vacantes disponibles que el total -> rechazado (código 121)
+OK    ofertas: salario mínimo mayor al máximo -> rechazado (código 121)
+OK    ofertas: oferta presencial sin ubicación -> rechazado (código 121)
+OK    postulaciones: historial de estados vacío -> rechazado (código 121)
+
+Verificación completa: sin errores.

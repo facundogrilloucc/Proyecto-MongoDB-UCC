@@ -1,0 +1,56 @@
+name: empleos
+
+services:
+  mongo:
+    image: mongo:8.0
+    container_name: empleos-mongo
+    # Replica set de un nodo: necesario para transacciones multidocumento.
+    # Con autenticación, los miembros de un replica set necesitan un keyfile;
+    # como hay un único nodo, se genera uno nuevo en cada arranque.
+    entrypoint:
+      - bash
+      - -c
+      - |
+        head -c 756 /dev/urandom | base64 > /tmp/keyfile
+        chmod 400 /tmp/keyfile && chown 999:999 /tmp/keyfile
+        exec docker-entrypoint.sh mongod --replSet rs0 --bind_ip_all --keyFile /tmp/keyfile
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_DB: ${MONGO_DB}
+    ports:
+      - "127.0.0.1:${MONGO_PORT:-27017}:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./db/scripts:/scripts:ro
+    # Inicializa el replica set la primera vez y luego verifica que haya un primario.
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >
+          mongosh --quiet -u "$$MONGO_INITDB_ROOT_USERNAME" -p "$$MONGO_INITDB_ROOT_PASSWORD"
+          --eval "try { rs.status() } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }) }
+          quit(db.hello().isWritablePrimary ? 0 : 1)"
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 15s
+
+  # Carga de datos de prueba: docker compose run --rm seed
+  seed:
+    image: python:3.12-slim
+    profiles: ["tools"]
+    working_dir: /app
+    volumes:
+      - ./seed:/app:ro
+    environment:
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo:27017/?authSource=admin&replicaSet=rs0
+      MONGO_DB: ${MONGO_DB}
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    command: sh -c "pip install --quiet --root-user-action=ignore -r requirements.txt && python generar_datos.py"
+
+volumes:
+  mongo_data:
