@@ -50,6 +50,22 @@ services:
       mongo:
         condition: service_healthy
 
+  # Análisis de datos con JupyterLab: docker compose up -d analisis -> http://localhost:8888
+  # La carpeta ./analisis se monta para que el notebook y los gráficos queden en el repositorio.
+  analisis:
+    build: ./analisis
+    container_name: empleos-analisis
+    environment:
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo:27017/?authSource=admin&replicaSet=rs0
+      MONGO_DB: ${MONGO_DB}
+    ports:
+      - "127.0.0.1:${JUPYTER_PORT:-8888}:8888"
+    volumes:
+      - ./analisis:/analisis
+    depends_on:
+      mongo:
+        condition: service_healthy
+
   # Carga de datos de prueba: docker compose run --rm seed
   seed:
     image: python:3.12-slim

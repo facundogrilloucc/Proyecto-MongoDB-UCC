@@ -15,8 +15,9 @@ Contenido:
 3. [Cargar la base (igual en los dos sistemas)](#3-cargar-la-base)
 4. [Conectarse con MongoDB Compass](#4-conectarse-con-mongodb-compass)
 5. [Levantar y probar la API](#5-levantar-y-probar-la-api)
-6. [Uso diario](#6-uso-diario)
-7. [Problemas frecuentes](#7-problemas-frecuentes)
+6. [Abrir el análisis de datos (Jupyter)](#6-abrir-el-análisis-de-datos-jupyter)
+7. [Uso diario](#7-uso-diario)
+8. [Problemas frecuentes](#8-problemas-frecuentes)
 
 ---
 
@@ -292,13 +293,38 @@ docker compose up -d --build --wait api
 
 ---
 
-## 6. Uso diario
+## 6. Abrir el análisis de datos (Jupyter)
+
+El notebook [`analisis/analisis.ipynb`](../analisis/analisis.ipynb) se puede **ver directamente en GitHub**, con todos los gráficos, sin instalar nada.
+
+Para ejecutarlo o modificarlo, con la base ya cargada:
+
+```bash
+docker compose up -d --build --wait analisis
+```
+
+Después abrí <http://localhost:8888> y hacé doble clic en `analisis.ipynb`. Para ejecutar todas las celdas: menú **Run → Run All Cells**.
+
+- La primera vez tarda un par de minutos, porque instala JupyterLab, Pandas y Matplotlib dentro de la imagen.
+- No pide contraseña, porque solo es accesible desde tu propia computadora.
+- Los cambios que guardes en el notebook quedan en la carpeta `analisis/` del proyecto.
+
+Para regenerar el notebook completo sin abrir el navegador (también actualiza los gráficos de `analisis/figuras/`):
+
+```bash
+docker compose run --rm analisis jupyter nbconvert --to notebook --execute --inplace analisis.ipynb
+```
+
+---
+
+## 7. Uso diario
 
 | Quiero... | Comando |
 | :--- | :--- |
 | Encender la base (los datos se conservan) | `docker compose up -d --wait mongo` |
 | Encender la base y la API | `docker compose up -d --build --wait api` |
 | Ver los logs de la API | `docker compose logs api` |
+| Abrir Jupyter con el análisis | `docker compose up -d --build --wait analisis` → <http://localhost:8888> |
 | Apagar todo (los datos se conservan) | `docker compose down` |
 | Volver la base al estado original | `bin/reset_db.sh` |
 | Borrar todo, incluidos los datos | `docker compose down -v` |
@@ -321,7 +347,7 @@ Aunque no la uses, la base queda encendida hasta que la apagues o cierres Docker
 
 ---
 
-## 7. Problemas frecuentes
+## 8. Problemas frecuentes
 
 | Síntoma | Causa | Solución |
 | :--- | :--- | :--- |
@@ -339,6 +365,8 @@ Aunque no la uses, la base queda encendida hasta que la apagues o cierres Docker
 | Puerto 8000 ocupado (`port is already allocated`) | Otro programa usa el 8000 | En el `.env`, agregar `API_PORT=8001` y abrir <http://localhost:8001/docs> |
 | Los tests terminan con `La base 'empleos' no tiene las colecciones` | Nunca se cargó la base | Ejecutar `bin/reset_db.sh` y volver a correr los tests |
 | La API se comporta como antes de un `git pull` | La imagen de la API no se reconstruyó | `docker compose up -d --build --wait api` |
+| <http://localhost:8888> no carga | Jupyter no está levantado, o el puerto 8888 está ocupado | `docker compose up -d --build --wait analisis`; si el puerto está ocupado, agregar `JUPYTER_PORT=8889` al `.env` |
+| El notebook falla en la primera celda con un error de conexión | La base no está cargada | `bin/reset_db.sh` y volver a ejecutar |
 
 **Si en Windows aparece `bad interpreter` o `$'\r': command not found`**, ejecutá en Git Bash, dentro del proyecto, los comandos de abajo. Ojo: **descartan los cambios que no hayas commiteado** (tu `.env` no se toca).
 

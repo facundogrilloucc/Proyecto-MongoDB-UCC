@@ -506,7 +506,7 @@ postulaciones  datos:  103603 | índices:   49152 | _id_=4096, ux_usuario_oferta
 
 - En `ofertas`, los índices ocupan **más que los datos** (78 KB contra 46 KB). Con tan pocos documentos, la mayor parte es el tamaño mínimo que reserva el motor de almacenamiento (WiredTiger) por cada índice, pero muestra que los índices no son gratis.
 - El índice de texto es el más grande: guarda una entrada por cada palabra distinta de cada título y descripción.
-- **Costo de escritura:** cada alta o modificación de una oferta actualiza 5 índices. Lo aceptamos porque las ofertas se leen mucho más de lo que se escriben (se publican una vez y se consultan miles de veces).
+- **Costo de escritura:** cada alta o modificación de una oferta actualiza 4 índices (`_id`, búsqueda, skills y texto). Lo aceptamos porque las ofertas se leen mucho más de lo que se escriben (se publican una vez y se consultan miles de veces).
 - En `postulaciones`, que es la colección con más escrituras (cambios de estado), mantuvimos solo los dos índices indispensables y no agregamos uno para ordenar por fecha (explain 4).
 
 ---

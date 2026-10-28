@@ -15,6 +15,9 @@ Base de datos documental para una plataforma de empleos: perfiles profesionales,
 | 1 — Propuesta y diseño | [docs/entrega-1-diseno.md](docs/entrega-1-diseno.md) |
 | 2 — Implementación, consultas e índices | [docs/entrega-2.md](docs/entrega-2.md) |
 | 3 — API, repositorios y consistencia | [docs/entrega-3.md](docs/entrega-3.md) |
+| 4 — Análisis de datos | [analisis/analisis.ipynb](analisis/analisis.ipynb) |
+| **Informe técnico final** | [docs/informe-final.md](docs/informe-final.md) |
+| Guía para la defensa | [docs/defensa.md](docs/defensa.md) |
 
 ## Requisitos
 
@@ -57,6 +60,24 @@ docker compose up -d --build --wait api
 
 La API está hecha con FastAPI y PyMongo, en tres capas: `routers` (HTTP), `services` (reglas de negocio y transacciones) y `repositories` (acceso a MongoDB). El detalle está en [docs/entrega-3.md](docs/entrega-3.md).
 
+## Análisis de datos
+
+Notebook de Jupyter con PyMongo, Pandas y Matplotlib: [analisis/analisis.ipynb](analisis/analisis.ipynb). En GitHub se ve con los gráficos ya generados.
+
+Para abrirlo en JupyterLab, con la base ya cargada:
+
+```bash
+docker compose up -d analisis
+```
+
+y entrar a <http://localhost:8888>.
+
+Para volver a ejecutarlo completo sin abrir el navegador (regenera también los gráficos de `analisis/figuras/`):
+
+```bash
+docker compose run --rm analisis jupyter nbconvert --to notebook --execute --inplace analisis.ipynb
+```
+
 ## Scripts de la base
 
 | Script | Qué hace |
@@ -89,7 +110,7 @@ mongodb://<usuario>:<contraseña>@localhost:27017/?authSource=admin&directConnec
 
 ## Detener el entorno
 
-Detener los contenedores (MongoDB y la API) y conservar los datos:
+Detener los contenedores (MongoDB, la API y Jupyter) y conservar los datos:
 
 ```bash
 docker compose down
@@ -105,8 +126,9 @@ docker compose down -v
 
 ```
 .
-├── docker-compose.yml       # MongoDB (replica set), API y servicio de carga de datos
+├── docker-compose.yml       # MongoDB (replica set), API, carga de datos y JupyterLab
 ├── api/                     # API REST (FastAPI): app/, tests/ y scripts/demo.py
+├── analisis/                # notebook de análisis y gráficos generados
 ├── .env.example             # variables de configuración, sin credenciales reales
 ├── bin/                     # reset_db.sh y mongosh.sh
 ├── db/scripts/              # scripts de mongosh (colecciones, índices, consultas...)
