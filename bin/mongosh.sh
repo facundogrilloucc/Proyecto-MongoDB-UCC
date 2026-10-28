@@ -5,6 +5,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# En Git Bash (Windows), evita que "/scripts/..." se convierta en "C:/Program Files/Git/scripts/...".
+export MSYS_NO_PATHCONV=1
+
 tty_flag="-T"
 if [ $# -eq 0 ] && [ -t 0 ]; then tty_flag=""; fi
 

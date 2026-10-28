@@ -8,6 +8,8 @@ Base de datos documental para una plataforma de empleos: perfiles profesionales,
 
 ## Documentación
 
+**¿Primera vez?** Seguí la guía paso a paso para Mac y Windows: [docs/instrucciones.md](docs/instrucciones.md).
+
 | Entrega | Documento |
 | :--- | :--- |
 | 1 — Propuesta y diseño | [docs/entrega-1-diseno.md](docs/entrega-1-diseno.md) |
