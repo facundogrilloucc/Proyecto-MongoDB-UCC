@@ -1,0 +1,354 @@
+
+====================================================================================================
+1. La API y la base están funcionando
+----------------------------------------------------------------------------------------------------
+GET /salud
+  -> 200
+     {
+       "estado": "ok"
+     }
+
+====================================================================================================
+2. Listar usuarios con filtros: seniors que saben python y sql (resumen paginado)
+----------------------------------------------------------------------------------------------------
+GET /usuarios?skill=python&skill=sql&seniority=senior&limite=2
+  -> 200
+     {
+       "total": 12,
+       "limite": 2,
+       "desplazamiento": 0,
+       "resultados": [
+         {
+           "id": "6a73d17044caa5a2a1e518a2",
+           "nombre": "Bautista",
+           "apellido": "Alvarez",
+           "titular": "Analista de Datos Sr | python · sql · pandas",
+           "seniority": "senior",
+           "ubicacion": {
+             "ciudad": "Ciudad Autónoma de Buenos Aires",
+             "provincia": "Buenos Aires",
+             "pais": "Argentina"
+           },
+           "skills": [
+             "python",
+     ... (36 líneas más)
+
+====================================================================================================
+3. Crear un usuario (las skills se normalizan y 'actual' se deriva de 'hasta')
+----------------------------------------------------------------------------------------------------
+POST /usuarios
+  cuerpo: {"nombre": "Lucía", "apellido": "Fernández", "email": "Lucia.Fernandez@demo.example", "titular": "Backend Developer", "seniority": "semi-senior", "ubicacion": {"ciudad": "Córdoba", "provincia": "Córdoba", "pais": "Argentina"}, "skills": ["Python", "MongoDB", "SQL", "python", "Docker"], "experiencia": [{"empresaNombre": "Freelance", "puesto": "Desarrolladora Backend", "desde": "2023-03-01"}], "educacion": [{"institucion": "Universidad Católica de Córdoba", "titulo": "Ingeniería en Sistemas", "desde": "2019-03-01", "estado": "en_curso"}]}
+  -> 201
+     {
+       "nombre": "Lucía",
+       "apellido": "Fernández",
+       "email": "lucia.fernandez@demo.example",
+       "titular": "Backend Developer",
+       "seniority": "semi-senior",
+       "ubicacion": {
+         "ciudad": "Córdoba",
+         "provincia": "Córdoba",
+         "pais": "Argentina"
+       },
+       "skills": [
+         "python",
+         "mongodb",
+         "sql",
+         "docker"
+       ],
+       "experiencia": [
+         {
+           "empresaId": null,
+           "empresaNombre": "Freelance",
+           "puesto": "Desarrolladora Backend",
+           "desde": "2023-03-01T00:00:00Z",
+           "hasta": null,
+           "actual": true
+         }
+       ],
+       "educacion": [
+         {
+           "institucion": "Universidad Católica de Córdoba",
+           "titulo": "Ingeniería en Sistemas",
+           "desde": "2019-03-01T00:00:00Z",
+           "hasta": null,
+           "estado": "en_curso"
+         }
+       ],
+       "id": "6ae1fa736c51aa8eadf005e0",
+       "creadoEn": "2026-10-28T13:36:51.251000Z",
+       "actualizadoEn": "2026-10-28T13:36:51.251000Z"
+     }
+
+====================================================================================================
+4. Crear otro usuario con el mismo email (distinto uso de mayúsculas) -> 409
+----------------------------------------------------------------------------------------------------
+POST /usuarios
+  cuerpo: {"nombre": "Lucía", "apellido": "Fernández", "email": "LUCIA.FERNANDEZ@demo.example", "titular": "Backend Developer", "seniority": "semi-senior", "ubicacion": {"ciudad": "Córdoba", "provincia": "Córdoba", "pais": "Argentina"}, "skills": ["Python", "MongoDB", "SQL", "python", "Docker"], "experiencia": [{"empresaNombre": "Freelance", "puesto": "Desarrolladora Backend", "desde": "2023-03-01"}], "educacion": [{"institucion": "Universidad Católica de Córdoba", "titulo": "Ingeniería en Sistemas", "desde": "2019-03-01", "estado": "en_curso"}]}
+  -> 409
+     {
+       "error": "conflicto",
+       "detalle": "Ya existe un usuario con el email lucia.fernandez@demo.example"
+     }
+
+====================================================================================================
+5. Crear un usuario con datos inválidos -> 422 con el detalle de cada error
+----------------------------------------------------------------------------------------------------
+POST /usuarios
+  cuerpo: {"nombre": "Lucía", "apellido": "Fernández", "email": "sin-arroba", "titular": "Backend Developer", "seniority": "experta", "ubicacion": {"ciudad": "Córdoba", "provincia": "Córdoba", "pais": "Argentina"}, "skills": ["Python", "MongoDB", "SQL", "python", "Docker"], "experiencia": [{"empresaNombre": "Freelance", "puesto": "Desarrolladora Backend", "desde": "2023-03-01"}], "educacion": [{"institucion": "Universidad Católica de Córdoba", "titulo": "Ingeniería en Sistemas", "desde": "2019-03-01", "estado": "en_curso"}]}
+  -> 422
+     {
+       "error": "datos_invalidos",
+       "detalle": "La petición tiene datos inválidos",
+       "errores": [
+         {
+           "campo": "body.email",
+           "mensaje": "String should match pattern '^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$'"
+         },
+         {
+           "campo": "body.seniority",
+           "mensaje": "Input should be 'junior', 'semi-senior', 'senior' or 'lead'"
+         }
+       ]
+     }
+
+====================================================================================================
+6. Obtener el usuario creado
+----------------------------------------------------------------------------------------------------
+GET /usuarios/6ae1fa736c51aa8eadf005e0
+  -> 200
+     {
+       "nombre": "Lucía",
+       "apellido": "Fernández",
+       "email": "lucia.fernandez@demo.example",
+       "titular": "Backend Developer",
+       "seniority": "semi-senior",
+       "ubicacion": {
+         "ciudad": "Córdoba",
+     ... (32 líneas más)
+
+====================================================================================================
+7. Actualizar parcialmente: reemplazar las skills, agregar preferencias y quitar el titular con null
+----------------------------------------------------------------------------------------------------
+PATCH /usuarios/6ae1fa736c51aa8eadf005e0
+  cuerpo: {"skills": ["python", "mongodb", "sql", "docker", "aws"], "preferencias": {"disponible": true}}
+  -> 200
+     {
+       "nombre": "Lucía",
+       "apellido": "Fernández",
+       "email": "lucia.fernandez@demo.example",
+       "titular": "Backend Developer",
+       "seniority": "semi-senior",
+       "ubicacion": {
+         "ciudad": "Córdoba",
+         "provincia": "Córdoba",
+         "pais": "Argentina"
+       },
+       "skills": [
+     ... (32 líneas más)
+PATCH /usuarios/6ae1fa736c51aa8eadf005e0
+  cuerpo: {"titular": null}
+  -> 200
+     {
+       "nombre": "Lucía",
+       "apellido": "Fernández",
+       "email": "lucia.fernandez@demo.example",
+       "seniority": "semi-senior",
+       "ubicacion": {
+     ... (37 líneas más)
+
+====================================================================================================
+8. Errores de identificador: inexistente -> 404, mal formado -> 422
+----------------------------------------------------------------------------------------------------
+GET /usuarios/6710a1f0c1a2b3c4d5e6f999
+  -> 404
+     {
+       "error": "no_encontrado",
+       "detalle": "No existe el usuario 6710a1f0c1a2b3c4d5e6f999"
+     }
+GET /usuarios/no-es-un-id
+  -> 422
+     {
+       "error": "datos_invalidos",
+       "detalle": "'no-es-un-id' no es un identificador válido"
+     }
+
+====================================================================================================
+9. Buscar una oferta abierta con una sola vacante disponible y algún postulante activo
+----------------------------------------------------------------------------------------------------
+GET /ofertas/6acc6950a2ef0f5381383447
+  -> 200
+     {
+       "id": "6acc6950a2ef0f5381383447",
+       "empresa": {
+         "empresaId": "676f5df0405cacec877409a9",
+         "nombre": "Puna Studio"
+       },
+       "titulo": "Desarrollador/a Backend Ssr",
+       "descripcion": "En Puna Studio buscamos desarrollador/a backend ssr para sumarse a nuestro equipo. Ofrecemos trabajo 100% remoto. Buscamos experiencia en mongodb, sql, postgresql, spring, aws.",
+       "seniority": "semi-senior",
+       "modalidad": "remoto",
+       "ubicacion": {
+         "ciudad": "La Plata",
+         "provincia": "Buenos Aires",
+         "pais": "Argentina"
+       },
+       "skillsRequeridas": [
+         "mongodb",
+         "sql",
+         "postgresql",
+         "spring",
+         "aws"
+       ],
+       "skillsDeseables": [
+         "redis"
+       ],
+       "salario": {
+         "min": 1600000,
+         "max": 2290000,
+         "moneda": "ARS",
+         "periodo": "mensual"
+       },
+       "vacantes": {
+         "total": 1,
+         "disponibles": 1
+       },
+       "estado": "abierta",
+       "cantidadPostulaciones": 4,
+       "fechaPublicacion": "2026-10-12T05:00:00Z",
+       "fechaCierre": null
+     }
+
+====================================================================================================
+10. Postularse a la oferta (la coincidencia de skills se calcula al postularse) y repetir -> 409
+----------------------------------------------------------------------------------------------------
+POST /ofertas/6acc6950a2ef0f5381383447/postulaciones
+  cuerpo: {"usuarioId": "6ae1fa736c51aa8eadf005e0", "cartaPresentacion": "Me interesa el puesto."}
+  -> 201
+     {
+       "id": "6ae1fa736c51aa8eadf005e2",
+       "usuarioId": "6ae1fa736c51aa8eadf005e0",
+       "ofertaId": "6acc6950a2ef0f5381383447",
+       "empresaId": "676f5df0405cacec877409a9",
+       "estado": "enviada",
+       "coincidenciaSkills": 0.6,
+       "cartaPresentacion": "Me interesa el puesto.",
+       "historialEstados": [
+         {
+           "estado": "enviada",
+           "fecha": "2026-10-28T13:36:51.270000Z"
+         }
+       ],
+       "fechaPostulacion": "2026-10-28T13:36:51.270000Z",
+       "actualizadoEn": "2026-10-28T13:36:51.270000Z"
+     }
+POST /ofertas/6acc6950a2ef0f5381383447/postulaciones
+  cuerpo: {"usuarioId": "6ae1fa736c51aa8eadf005e0"}
+  -> 409
+     {
+       "error": "conflicto",
+       "detalle": "El usuario ya se postuló a esta oferta"
+     }
+
+====================================================================================================
+11. Transición no permitida: de 'enviada' directo a 'aceptada' -> 409
+----------------------------------------------------------------------------------------------------
+PATCH /postulaciones/6ae1fa736c51aa8eadf005e2/estado
+  cuerpo: {"estado": "aceptada"}
+  -> 409
+     {
+       "error": "conflicto",
+       "detalle": "Una postulación en estado 'enviada' no puede pasar a 'aceptada'"
+     }
+
+====================================================================================================
+12. Avanzar el proceso: en_revision -> entrevista -> aceptada (transacción)
+----------------------------------------------------------------------------------------------------
+PATCH /postulaciones/6ae1fa736c51aa8eadf005e2/estado
+  cuerpo: {"estado": "en_revision"}
+  -> 200
+     ... (21 líneas más)
+PATCH /postulaciones/6ae1fa736c51aa8eadf005e2/estado
+  cuerpo: {"estado": "entrevista", "nota": "Entrevista técnica"}
+  -> 200
+     ... (26 líneas más)
+PATCH /postulaciones/6ae1fa736c51aa8eadf005e2/estado
+  cuerpo: {"estado": "aceptada", "nota": "Oferta aceptada"}
+  -> 200
+     {
+       "id": "6ae1fa736c51aa8eadf005e2",
+       "usuarioId": "6ae1fa736c51aa8eadf005e0",
+       "ofertaId": "6acc6950a2ef0f5381383447",
+       "empresaId": "676f5df0405cacec877409a9",
+       "estado": "aceptada",
+       "coincidenciaSkills": 0.6,
+       "cartaPresentacion": "Me interesa el puesto.",
+       "historialEstados": [
+         {
+           "estado": "enviada",
+           "fecha": "2026-10-28T13:36:51.270000Z"
+         },
+         {
+           "estado": "en_revision",
+           "fecha": "2026-10-28T13:36:51.277000Z"
+         },
+         {
+           "estado": "entrevista",
+           "fecha": "2026-10-28T13:36:51.279000Z",
+           "nota": "Entrevista técnica"
+         },
+         {
+           "estado": "aceptada",
+           "fecha": "2026-10-28T13:36:51.281000Z",
+           "nota": "Oferta aceptada"
+         }
+       ],
+       "fechaPostulacion": "2026-10-28T13:36:51.270000Z",
+       "actualizadoEn": "2026-10-28T13:36:51.281000Z"
+     }
+
+====================================================================================================
+13. La oferta descontó la vacante y, como era la última, quedó cerrada
+----------------------------------------------------------------------------------------------------
+GET /ofertas/6acc6950a2ef0f5381383447
+  -> 200
+     ... (40 líneas más)
+     estado: cerrada | vacantes: {'total': 1, 'disponibles': 0} | fechaCierre: 2026-10-28T13:36:51.281000Z
+
+====================================================================================================
+14. Otro candidato de la misma oferta llega a entrevista e intenta ser aceptado -> 409 sin vacantes
+----------------------------------------------------------------------------------------------------
+(postulación 6ad3505e4a9f6c5c7eb9fe2d en estado 'entrevista')
+PATCH /postulaciones/6ad3505e4a9f6c5c7eb9fe2d/estado
+  cuerpo: {"estado": "aceptada"}
+  -> 409
+     {
+       "error": "conflicto",
+       "detalle": "La oferta no está abierta o ya no tiene vacantes disponibles"
+     }
+GET /postulaciones/6ad3505e4a9f6c5c7eb9fe2d
+  -> 200
+     ... (28 líneas más)
+     -> sigue en 'entrevista': la transacción se abortó y el paso 1 se deshizo
+
+====================================================================================================
+15. Eliminar un usuario con una contratación registrada -> 409
+----------------------------------------------------------------------------------------------------
+DELETE /usuarios/6ae1fa736c51aa8eadf005e0
+  -> 409
+     {
+       "error": "conflicto",
+       "detalle": "El usuario tiene contrataciones registradas y no puede eliminarse"
+     }
+
+====================================================================================================
+16. Eliminar un usuario sin contrataciones -> 204, y después ya no existe
+----------------------------------------------------------------------------------------------------
+DELETE /usuarios/6ae1fa736c51aa8eadf005e4
+  -> 204
+GET /usuarios/6ae1fa736c51aa8eadf005e4
+  -> 404
+     {
+       "error": "no_encontrado",
+       "detalle": "No existe el usuario 6ae1fa736c51aa8eadf005e4"
+     }

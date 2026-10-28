@@ -14,6 +14,7 @@ Base de datos documental para una plataforma de empleos: perfiles profesionales,
 | :--- | :--- |
 | 1 — Propuesta y diseño | [docs/entrega-1-diseno.md](docs/entrega-1-diseno.md) |
 | 2 — Implementación, consultas e índices | [docs/entrega-2.md](docs/entrega-2.md) |
+| 3 — API, repositorios y consistencia | [docs/entrega-3.md](docs/entrega-3.md) |
 
 ## Requisitos
 
@@ -41,6 +42,20 @@ Ese script:
 5. Verifica cantidades, integridad y reglas de negocio (`db/scripts/03_verificacion.js`).
 
 Se puede ejecutar todas las veces que haga falta: siempre deja la base en el mismo estado, porque los datos se generan con una semilla fija.
+
+## API
+
+Con la base ya cargada:
+
+```bash
+docker compose up -d --build --wait api
+```
+
+- Documentación interactiva (Swagger): <http://localhost:8000/docs>
+- Tests de integración (43): `docker compose run --rm api pytest`
+- Recorrido de demostración de todos los endpoints: `docker compose exec api python scripts/demo.py`. Modifica datos; después conviene volver al estado original con `bin/reset_db.sh`.
+
+La API está hecha con FastAPI y PyMongo, en tres capas: `routers` (HTTP), `services` (reglas de negocio y transacciones) y `repositories` (acceso a MongoDB). El detalle está en [docs/entrega-3.md](docs/entrega-3.md).
 
 ## Scripts de la base
 
@@ -74,7 +89,7 @@ mongodb://<usuario>:<contraseña>@localhost:27017/?authSource=admin&directConnec
 
 ## Detener el entorno
 
-Detener los contenedores y conservar los datos:
+Detener los contenedores (MongoDB y la API) y conservar los datos:
 
 ```bash
 docker compose down
@@ -90,7 +105,8 @@ docker compose down -v
 
 ```
 .
-├── docker-compose.yml       # MongoDB (replica set) + servicio de carga de datos
+├── docker-compose.yml       # MongoDB (replica set), API y servicio de carga de datos
+├── api/                     # API REST (FastAPI): app/, tests/ y scripts/demo.py
 ├── .env.example             # variables de configuración, sin credenciales reales
 ├── bin/                     # reset_db.sh y mongosh.sh
 ├── db/scripts/              # scripts de mongosh (colecciones, índices, consultas...)

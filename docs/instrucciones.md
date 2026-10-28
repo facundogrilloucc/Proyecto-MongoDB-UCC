@@ -14,8 +14,9 @@ Contenido:
 2. [Instalación en Windows](#2-instalación-en-windows)
 3. [Cargar la base (igual en los dos sistemas)](#3-cargar-la-base)
 4. [Conectarse con MongoDB Compass](#4-conectarse-con-mongodb-compass)
-5. [Uso diario](#5-uso-diario)
-6. [Problemas frecuentes](#6-problemas-frecuentes)
+5. [Levantar y probar la API](#5-levantar-y-probar-la-api)
+6. [Uso diario](#6-uso-diario)
+7. [Problemas frecuentes](#7-problemas-frecuentes)
 
 ---
 
@@ -238,12 +239,67 @@ Qué significa cada parte de la URI:
 
 ---
 
-## 5. Uso diario
+## 5. Levantar y probar la API
+
+Con la base ya cargada (sección 3), en Mac (Terminal) o Windows (Git Bash):
+
+```bash
+docker compose up -d --build --wait api
+```
+
+La primera vez tarda un par de minutos, porque construye la imagen de la API e instala FastAPI y PyMongo.
+
+### 5.1. Probarla desde el navegador (Swagger)
+
+Abrí <http://localhost:8000/docs>. Ahí aparecen todos los endpoints. Para probar uno:
+
+1. Hacé clic en el endpoint, por ejemplo `GET /usuarios`.
+2. Clic en **Try it out**.
+3. Completá los parámetros, por ejemplo `skill = python`.
+4. Clic en **Execute**.
+
+Abajo se ve la respuesta con su código HTTP.
+
+Para obtener un id con el que probar `GET /usuarios/{id}`, `PATCH` o `DELETE`, copialo de la respuesta de `GET /usuarios`.
+
+### 5.2. Correr los tests
+
+```bash
+docker compose run --rm api pytest
+```
+
+Tienen que pasar los 43. Los tests usan una base aparte (`empleos_test`) y no tocan los datos del proyecto, pero necesitan que `bin/reset_db.sh` se haya ejecutado al menos una vez.
+
+### 5.3. Recorrido de demostración
+
+```bash
+docker compose exec api python scripts/demo.py
+```
+
+Ejecuta, uno por uno, todos los casos de la API (crear, errores, postularse, aceptar candidato, etc.) y muestra cada petición con su respuesta. **Modifica la base**, así que después volvé al estado original:
+
+```bash
+bin/reset_db.sh
+```
+
+### 5.4. Después de un `git pull` con cambios en la API
+
+Hay que reconstruir la imagen:
+
+```bash
+docker compose up -d --build --wait api
+```
+
+---
+
+## 6. Uso diario
 
 | Quiero... | Comando |
 | :--- | :--- |
 | Encender la base (los datos se conservan) | `docker compose up -d --wait mongo` |
-| Apagar la base (los datos se conservan) | `docker compose down` |
+| Encender la base y la API | `docker compose up -d --build --wait api` |
+| Ver los logs de la API | `docker compose logs api` |
+| Apagar todo (los datos se conservan) | `docker compose down` |
 | Volver la base al estado original | `bin/reset_db.sh` |
 | Borrar todo, incluidos los datos | `docker compose down -v` |
 | Ver si el contenedor está corriendo | `docker compose ps` |
@@ -265,7 +321,7 @@ Aunque no la uses, la base queda encendida hasta que la apagues o cierres Docker
 
 ---
 
-## 6. Problemas frecuentes
+## 7. Problemas frecuentes
 
 | Síntoma | Causa | Solución |
 | :--- | :--- | :--- |
@@ -279,6 +335,10 @@ Aunque no la uses, la base queda encendida hasta que la apagues o cierres Docker
 | Compass: `Authentication failed` **después de cambiar la contraseña** del `.env` | MongoDB crea el usuario una sola vez, la primera vez que arranca, y sigue usando la contraseña vieja | `docker compose down -v` y después `bin/reset_db.sh` |
 | Compass: `connection timed out` o `getaddrinfo ENOTFOUND mongo` | El contenedor está apagado, o falta `directConnection=true` en la URI | `docker compose up -d --wait mongo` y revisar la URI |
 | `dependency failed to start: container empleos-mongo is unhealthy` | MongoDB tardó más de lo normal en arrancar (frecuente la primera vez) | Volver a ejecutar `bin/reset_db.sh` |
+| <http://localhost:8000/docs> no carga | La API no está levantada | `docker compose up -d --build --wait api` y revisar `docker compose logs api` |
+| Puerto 8000 ocupado (`port is already allocated`) | Otro programa usa el 8000 | En el `.env`, agregar `API_PORT=8001` y abrir <http://localhost:8001/docs> |
+| Los tests terminan con `La base 'empleos' no tiene las colecciones` | Nunca se cargó la base | Ejecutar `bin/reset_db.sh` y volver a correr los tests |
+| La API se comporta como antes de un `git pull` | La imagen de la API no se reconstruyó | `docker compose up -d --build --wait api` |
 
 **Si en Windows aparece `bad interpreter` o `$'\r': command not found`**, ejecutá en Git Bash, dentro del proyecto, los comandos de abajo. Ojo: **descartan los cambios que no hayas commiteado** (tu `.env` no se toca).
 

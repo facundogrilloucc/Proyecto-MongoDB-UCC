@@ -1,0 +1,46 @@
+== Cantidad de documentos
+   empresas       20
+   usuarios       121
+   ofertas        60
+   postulaciones  251
+   total          452
+
+== Integridad referencial
+OK    Toda oferta referencia a una empresa existente
+OK    El nombre de empresa desnormalizado en la oferta coincide con el original
+OK    Toda postulación referencia a un usuario existente
+OK    Toda postulación referencia a una oferta existente y de la misma empresa
+
+== Reglas de negocio
+OK    vacantes.disponibles = total - postulaciones aceptadas
+OK    cantidadPostulaciones = postulaciones no retiradas
+OK    Ninguna oferta abierta o pausada se quedó sin vacantes
+OK    Las ofertas cerradas tienen fecha de cierre y las demás no
+OK    El estado de la postulación coincide con el último paso de su historial
+OK    Nadie se postuló antes de que se publicara la oferta
+
+== Casos límite
+   Usuarios sin experiencia laboral               16
+   Usuarios sin skills (perfil recién creado)     2
+   Usuarios sin preferencias                      20
+   Usuarios fuera de Argentina                    3
+   Usuarios con más de un trabajo actual          3
+   Experiencias en empresas no registradas        130
+   Empresas sin ofertas publicadas                3
+   Ofertas sin salario publicado                  18
+   Ofertas remotas sin ubicación                  10
+   Ofertas cerradas sin vacantes disponibles      11
+   Ofertas pausadas                               4
+   Ofertas sin postulaciones                      3
+   Postulaciones por estado: {"aceptada":26,"en_revision":43,"entrevista":24,"enviada":58,"rechazada":73,"retirada":27}
+
+== Validación de esquema (se espera que cada inserción falle)
+OK    usuarios: email con formato inválido -> rechazado (código 121)
+OK    usuarios: seniority fuera de los valores permitidos -> rechazado (código 121)
+OK    usuarios: skills repetidas -> rechazado (código 121)
+OK    ofertas: más vacantes disponibles que el total -> rechazado (código 121)
+OK    ofertas: salario mínimo mayor al máximo -> rechazado (código 121)
+OK    ofertas: oferta presencial sin ubicación -> rechazado (código 121)
+OK    postulaciones: historial de estados vacío -> rechazado (código 121)
+
+Verificación completa: sin errores.

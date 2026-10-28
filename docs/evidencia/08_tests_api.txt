@@ -1,0 +1,54 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-8.3.4, pluggy-1.7.0 -- /usr/local/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /api
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1
+collecting ... collected 43 items
+
+tests/test_postulaciones.py::test_postularse_crea_la_postulacion_y_suma_al_contador PASSED [  2%]
+tests/test_postulaciones.py::test_postularse_dos_veces_devuelve_409_y_no_cambia_el_contador PASSED [  4%]
+tests/test_postulaciones.py::test_postularse_a_una_oferta_no_abierta_devuelve_409[pausada] PASSED [  6%]
+tests/test_postulaciones.py::test_postularse_a_una_oferta_no_abierta_devuelve_409[cerrada] PASSED [  9%]
+tests/test_postulaciones.py::test_postularse_con_usuario_u_oferta_inexistente_devuelve_404 PASSED [ 11%]
+tests/test_postulaciones.py::test_transiciones_validas_actualizan_estado_e_historial PASSED [ 13%]
+tests/test_postulaciones.py::test_transicion_no_permitida_devuelve_409_sin_modificar[enviada-aceptada] PASSED [ 16%]
+tests/test_postulaciones.py::test_transicion_no_permitida_devuelve_409_sin_modificar[rechazada-entrevista] PASSED [ 18%]
+tests/test_postulaciones.py::test_transicion_no_permitida_devuelve_409_sin_modificar[retirada-en_revision] PASSED [ 20%]
+tests/test_postulaciones.py::test_transicion_no_permitida_devuelve_409_sin_modificar[aceptada-rechazada] PASSED [ 23%]
+tests/test_postulaciones.py::test_cambiar_estado_de_postulacion_inexistente_devuelve_404 PASSED [ 25%]
+tests/test_postulaciones.py::test_retirar_resta_la_postulacion_del_contador PASSED [ 27%]
+tests/test_postulaciones.py::test_aceptar_descuenta_una_vacante_y_la_oferta_sigue_abierta PASSED [ 30%]
+tests/test_postulaciones.py::test_aceptar_la_ultima_vacante_cierra_la_oferta PASSED [ 32%]
+tests/test_postulaciones.py::test_aceptar_sin_vacantes_devuelve_409_y_deshace_el_cambio_de_la_postulacion PASSED [ 34%]
+tests/test_postulaciones.py::test_falla_a_mitad_de_la_transaccion_no_deja_cambios_parciales PASSED [ 37%]
+tests/test_postulaciones.py::test_aceptaciones_simultaneas_no_superan_las_vacantes PASSED [ 39%]
+tests/test_postulaciones.py::test_listar_postulantes_de_una_oferta_ordena_por_coincidencia PASSED [ 41%]
+tests/test_usuarios.py::test_crear_usuario_normaliza_y_completa_campos_derivados PASSED [ 44%]
+tests/test_usuarios.py::test_crear_usuario_con_email_repetido_devuelve_409 PASSED [ 46%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[email] PASSED [ 48%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[seniority] PASSED [ 51%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[nombre_vacio] PASSED [ 53%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[campo_desconocido] PASSED [ 55%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[sin_pais] PASSED [ 58%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[experiencia_sin_empresa] PASSED [ 60%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[fechas_invertidas] PASSED [ 62%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[actual_incoherente] PASSED [ 65%]
+tests/test_usuarios.py::test_crear_usuario_con_datos_invalidos_devuelve_422[demasiadas_skills] PASSED [ 67%]
+tests/test_usuarios.py::test_crear_usuario_con_empresa_inexistente_devuelve_422 PASSED [ 69%]
+tests/test_usuarios.py::test_obtener_usuario_inexistente_devuelve_404 PASSED [ 72%]
+tests/test_usuarios.py::test_obtener_usuario_con_id_mal_formado_devuelve_422 PASSED [ 74%]
+tests/test_usuarios.py::test_listar_usuarios_filtra_y_pagina PASSED      [ 76%]
+tests/test_usuarios.py::test_actualizar_modifica_solo_los_campos_enviados PASSED [ 79%]
+tests/test_usuarios.py::test_actualizar_con_null_elimina_un_campo_opcional PASSED [ 81%]
+tests/test_usuarios.py::test_actualizar_con_datos_invalidos_devuelve_422[null_en_obligatorio] PASSED [ 83%]
+tests/test_usuarios.py::test_actualizar_con_datos_invalidos_devuelve_422[sin_campos] PASSED [ 86%]
+tests/test_usuarios.py::test_actualizar_con_datos_invalidos_devuelve_422[valor_invalido] PASSED [ 88%]
+tests/test_usuarios.py::test_actualizar_usuario_inexistente_devuelve_404 PASSED [ 90%]
+tests/test_usuarios.py::test_actualizar_con_email_de_otro_usuario_devuelve_409 PASSED [ 93%]
+tests/test_usuarios.py::test_eliminar_usuario_borra_sus_postulaciones_y_ajusta_las_ofertas PASSED [ 95%]
+tests/test_usuarios.py::test_eliminar_usuario_con_contratacion_devuelve_409_y_no_borra_nada PASSED [ 97%]
+tests/test_usuarios.py::test_eliminar_usuario_inexistente_devuelve_404 PASSED [100%]
+
+============================== 43 passed in 0.46s ==============================
