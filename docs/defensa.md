@@ -22,6 +22,7 @@ Esta guía tiene una propuesta de presentación con demo, una ficha para cada un
 - [ ] `docker compose run --rm api pytest -q` → `43 passed`.
 - [ ] `docker compose up -d analisis` → abrir <http://localhost:8888> y el notebook `analisis.ipynb`.
 - [ ] Compass conectado a la base (URI en [instrucciones.md](instrucciones.md), sección 4).
+- [ ] Ensayar la demo de corrido: `DEMO_SIN_PAUSAS=1 docs/PRESENTACION/demo/demo_en_vivo.sh`.
 
 **15 minutos antes:**
 
@@ -39,59 +40,33 @@ El reparto es una sugerencia; acomódenlo como prefieran.
 | :--- | :--- | :--- | :--- | :--- |
 | 1. Problema y modelo | 3 min | Integrante A | Dominio, por qué MongoDB, las 4 colecciones, qué se embebe y qué se referencia | Diagrama del [informe](informe-final.md), sección 3; un usuario completo en Compass |
 | 2. Consultas e índices | 3 min | Integrante B | Una consulta de arreglos, una agregación, el *matching*; índice ESR con `explain` | Consultas 5, 8 y 10 en mongosh o Compass; salida de `05_explain.js` |
-| 3. API y consistencia | 4 min | Integrante C | Capas, CRUD, el caso "aceptar candidato" con su transacción y los tests | Swagger en vivo (sección 3); `pytest` |
+| 3. API y consistencia | 4 min | Integrante C | Capas, CRUD, el caso "aceptar candidato" con su transacción y los tests | Pasos 5 y 6 de la demo (sección 3) |
 | 4. Análisis y conclusiones | 3 min | Integrante A o B | 2 o 3 gráficos y la recomendación | Notebook en Jupyter |
 | 5. Reproducibilidad | 1 min | Integrante C | Docker Compose, `reset_db.sh`, prueba desde entorno limpio | `docker compose ps` |
 
 ---
 
-## 3. Guion de la demo en vivo
+## 3. Demo en vivo
 
-Todo sobre los datos originales (después de `bin/reset_db.sh`).
+La demo está automatizada en [`PRESENTACION/demo/demo_en_vivo.sh`](PRESENTACION/demo/demo_en_vivo.sh). Avanza de a un paso, espera un Enter entre cada uno y empieza dejando la base en su estado original.
 
-### 3.1. El modelo, en Compass (bloque 1)
-
-1. Abrir `empleos.usuarios` y expandir un documento. Mostrar los arreglos embebidos `experiencia` y `skills`, y el subdocumento `preferencias`.
-2. Abrir un documento de `postulaciones` y mostrar `historialEstados` embebido, y `usuarioId` y `ofertaId` como referencias.
-3. Pestaña **Validation** de `ofertas`: mostrar el `$jsonSchema` y las reglas entre campos.
-
-### 3.2. Una consulta y su índice (bloque 2)
-
-Abrir la consola: `bin/mongosh.sh` en Mac, o la consola de Compass en Windows (`use empleos`). Pegar:
-
-```js
-db.usuarios.find(
-  { skills: { $all: ["python", "sql"] }, experiencia: { $elemMatch: { actual: true, empresaId: { $ne: null } } } },
-  { _id: 0, nombre: 1, apellido: 1, skills: 1, experiencia: { $elemMatch: { actual: true, empresaId: { $ne: null } } } }
-)
+```bash
+docs/PRESENTACION/demo/demo_en_vivo.sh
 ```
 
-Después, el índice de la búsqueda principal:
+El guion está en **[`PRESENTACION/guia_demo.md`](PRESENTACION/guia_demo.md)**. Para cada paso indica qué aparece en pantalla, qué decir, qué requisito de la consigna demuestra y qué suelen preguntar.
 
-```js
-db.ofertas.find({ estado: "abierta", seniority: "semi-senior", "salario.moneda": "ARS", "salario.min": { $gte: 1700000 } })
-  .explain("executionStats").executionStats
-```
+| Situación | Cómo usar la guía |
+| :--- | :--- |
+| **El profesor pide solamente la demo** | Seguir la guía completa, empezando por la sección 0 ("El proyecto en un minuto"). Cubre todos los requisitos de la consigna en unos 12 minutos |
+| **Presentación completa con demo** | Usar los pasos de la demo dentro de cada bloque de la sección 2: el paso 1 en el bloque 1; los pasos 3 y 4 en el bloque 2; los pasos 5 y 6 en el bloque 3; y Jupyter (paso 7) en el bloque 4 |
+| **Piden algo que la demo no muestra** | Tabla "Si piden ver más", al final de la guía |
 
-Señalar que `totalDocsExamined` es 3, igual a `nReturned`. Sin el índice (agregando `.hint({ $natural: 1 })` antes de `.explain`) examina 60.
+**Alternativa manual:** si el script no se puede ejecutar, se pueden hacer los mismos pasos a mano:
 
-### 3.3. Aceptar a un candidato, en Swagger (bloque 3)
-
-1. **`GET /ofertas/{id}`** con la oferta *Desarrollador/a Mobile Sr* de Brújula Fintech, id `6aacc5503c4722f3c1b4fd44`. Está abierta, tiene 1 vacante y 9 postulantes activos. Como los datos se generan siempre iguales, el id es el mismo en todas las computadoras después de `bin/reset_db.sh`.
-2. **`GET /ofertas/{id}/postulaciones`**: anotar dos postulaciones en estado `enviada`, `en_revision` o `entrevista`. Vienen ordenadas por coincidencia de skills, de mayor a menor.
-3. **`PATCH /postulaciones/{id}/estado`** con la primera: llevarla hasta `entrevista` (de a un paso: `en_revision` → `entrevista`). Después enviar `{"estado": "aceptada"}` → **200**.
-4. **`GET /ofertas/{id}`**: la oferta quedó **cerrada** con `disponibles: 0`.
-5. Con la segunda postulación, llevarla a `entrevista` e intentar `aceptada` → **409**, "ya no tiene vacantes". Con **`GET /postulaciones/{id}`**, mostrar que sigue en `entrevista`: la transacción se abortó y el primer paso se deshizo.
-6. Probar una transición inválida, por ejemplo `aceptada` desde `enviada` → **409**.
-7. En la terminal, ejecutar `docker compose run --rm api pytest -q -k "simultaneas or falla_a_mitad"` y explicar qué prueba cada test.
-
-Alternativa más rápida: `docker compose exec api python scripts/demo.py` hace todo el recorrido, y los pasos 12 a 14 son este caso.
-
-### 3.4. El análisis (bloque 4)
-
-En Jupyter: gráficos 1 y 2, el resumen de indicadores (sección 4 del notebook) y la recomendación.
-
-**Al terminar:** `bin/reset_db.sh` para dejar la base como estaba.
+- El modelo y la validación, en Compass (colecciones `usuarios` y `postulaciones`, y la pestaña **Validation** de `ofertas`).
+- La consulta y el `explain`, en mongosh. Los comandos están en las secciones 4.2 y 4.3 de esta guía.
+- El caso "aceptar candidato", en Swagger, con la oferta `6aacc5503c4722f3c1b4fd44`: llevar dos postulaciones activas hasta `entrevista` y aceptarlas. La primera recibe 200 y la segunda, 409.
 
 ---
 
@@ -108,7 +83,14 @@ Si preguntan por los costos:
 
 ### 4.2. Ejecutar una consulta
 
-Tener preparada **una** consulta y saber explicar cada operador. Se recomienda la consulta 5 (sección 3.2 de esta guía):
+Tener preparada **una** consulta y saber explicar cada operador. Se recomienda la consulta 5, que es también el paso 3 de la demo. Para ejecutarla a mano: abrir `bin/mongosh.sh` en Mac, o la consola de Compass en Windows (`use empleos`), y pegar:
+
+```js
+db.usuarios.find(
+  { skills: { $all: ["python", "sql"] }, experiencia: { $elemMatch: { actual: true, empresaId: { $ne: null } } } },
+  { _id: 0, nombre: 1, apellido: 1, skills: 1, experiencia: { $elemMatch: { actual: true, empresaId: { $ne: null } } } }
+)
+```
 
 - **`$all`:** el arreglo `skills` tiene que contener **todos** los valores indicados, en cualquier orden.
 - **`$elemMatch`:** **un mismo elemento** de `experiencia` tiene que cumplir las dos condiciones a la vez. Sin `$elemMatch`, un trabajo podría cumplir `actual: true` y otro distinto `empresaId != null`.
@@ -125,6 +107,15 @@ Como alternativa, una agregación: la consulta 9 (salarios). Explicar `$match` �
 - En `explain`: 3 claves examinadas, 3 documentos examinados y 3 devueltos. Sin índice examina las 60 ofertas y además ordena en memoria (`SORT`). Con el índice no hay `SORT`, porque las claves ya vienen ordenadas por `salario.min`.
 - Costo: ocupa espacio (en `ofertas` los índices pesan más que los datos) y cada escritura lo actualiza. Lo aceptamos porque las ofertas se leen mucho más de lo que se escriben.
 - Con 450 documentos todo tarda 0 ms, así que el beneficio se mide comparando documentos examinados contra devueltos, no por el tiempo.
+
+Para mostrarlo a mano (es el paso 4 de la demo):
+
+```js
+db.ofertas.find({ estado: "abierta", seniority: "semi-senior", "salario.moneda": "ARS", "salario.min": { $gte: 1700000 } })
+  .explain("executionStats").executionStats
+```
+
+`totalDocsExamined` da 3, igual a `nReturned`. Agregando `.hint({ $natural: 1 })` antes de `.explain(...)`, para que no use el índice, examina 60.
 
 Otro buen ejemplo: **`ux_usuario_oferta`** (único). Garantiza en la base que nadie se postule dos veces, incluso si llegan dos peticiones al mismo tiempo, y su prefijo `usuarioId` resuelve "mis postulaciones" sin otro índice.
 

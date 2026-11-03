@@ -18,6 +18,7 @@ Base de datos documental para una plataforma de empleos: perfiles profesionales,
 | 4 — Análisis de datos | [analisis/analisis.ipynb](analisis/analisis.ipynb) |
 | **Informe técnico final** | [docs/informe-final.md](docs/informe-final.md) |
 | Guía para la defensa | [docs/defensa.md](docs/defensa.md) |
+| Presentación (.pptx), informe (.docx) y demo en vivo | [docs/PRESENTACION/](docs/PRESENTACION/) |
 
 ## Requisitos
 
