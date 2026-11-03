@@ -3,7 +3,7 @@
 | Archivo | Qué es |
 | :--- | :--- |
 | [`Presentacion_Plataforma_Empleos.pptx`](Presentacion_Plataforma_Empleos.pptx) | Presentación de 29 diapositivas, con notas del orador en cada una |
-| [`Informe_Tecnico_Plataforma_Empleos.docx`](Informe_Tecnico_Plataforma_Empleos.docx) | Informe técnico completo en Word (16 páginas), con tablas, código y los gráficos del análisis |
+| [`Informe_Base_de_Datos_Aplicada_Plataforma_Empleos.docx`](Informe_Base_de_Datos_Aplicada_Plataforma_Empleos.docx) | Informe técnico en Word con formato académico de la UCC: carátula, índice, tablas, código y los gráficos del análisis |
 | [`demo/demo_en_vivo.sh`](demo/demo_en_vivo.sh) | Demo guiada para ejecutar en vivo mientras se presenta |
 | [`guia_demo.md`](guia_demo.md) | Explicación de todo el proyecto a través de la demo: qué aparece y qué decir en cada paso. Sirve si piden mostrar solamente la demo |
 
@@ -28,7 +28,7 @@ Estructura:
 
 ## Informe
 
-El índice se completa al abrir el archivo en Word. Si Word pregunta si quiere actualizar los campos del documento, responder **Sí**. Si el índice aparece vacío, hacer clic derecho sobre él y elegir **Actualizar campos**.
+Si el índice aparece vacío o desactualizado al abrir el archivo en Word, hacer clic derecho sobre él y elegir **Actualizar campos**.
 
 ## Demo en vivo
 
